@@ -6,6 +6,7 @@ const orderSchema = mongoose.Schema({
         type: String,
         default: 'In process'
     },
+    // Skriver ut utc tiden, inte den lokala tiden.
     timestamps: {
         type: Date,
         default: Date.now

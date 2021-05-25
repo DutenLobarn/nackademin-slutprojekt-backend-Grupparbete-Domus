@@ -5,7 +5,7 @@ require('dotenv').config()
 const User = require('../modules/usersModel')
 
 const express = require('express')
-const app = express()
+
 const router = express.Router()
 
 // Bcrypt for password check
@@ -14,6 +14,7 @@ const bcrypt = require('bcryptjs')
 // Token
 const jwt = require('jsonwebtoken')
 
+// Denna post hittar en user genom email, kollar hens hashade lösenord, skapar en payload och ger den en token som vi lägger i cookie.
 router.post('/api/auth/', async (req, res) => {
 
     //Letar bara upp User via email.
@@ -23,18 +24,17 @@ router.post('/api/auth/', async (req, res) => {
 
     if (user) {
 
-        //Jämför hashade req.password mot det du skriver in i Insomnia. 
+        //Jämför hashade req.password mot det du skriver in i det user loggar in.
         bcrypt.compare(req.body.password, user.password, function (err, result) {
             if (err) res.json(err)
 
             //om resultatet inte är false, signa och skicka token. 
             if (result !== false) {
                 const payload = {
-                    role: user.role,
-                    email: req.body.email,
                     _id: user._id
                 }
-
+            
+                // denna metod ger oss en token, den behöver en payload och ett lösenord som vi gömt i vår env fil.
                 const token = jwt.sign(payload, `${process.env.SECRET}`)
                 res.cookie('auth-token', token)
                 res.send({

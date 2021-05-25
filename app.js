@@ -17,8 +17,8 @@ mongoose.connect(process.env.URI, { useUnifiedTopology: true, useNewUrlParser: t
 
 const db = mongoose.connection
 
-db.on('error', (err) => {console.error(err)})
-db.once('open', () => {console.log("Db ansluten.")})
+db.on('error', (err) => { console.error(err) })
+db.once('open', () => { console.log("Db ansluten.") })
 
 // Middleware
 
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // This to use the frontend files.
-app.use( express.static('public') )
+app.use(express.static('public'))
 
 // cookies
 const cookieParser = require('cookie-parser')

@@ -1,19 +1,18 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-    email: String,
+    email: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
     },
-    // repeatPassword: {
-    //     type: String,
-    //     required: true
-    // },
     name: String,
     role: {
         type: String,
-        default: 'customer'
+        default: 'logged in customer'
     },
     adress: {
         street: String,
@@ -21,7 +20,7 @@ const userSchema = mongoose.Schema({
         city: String
     },
     orderHistory: [{
-        type: mongoose.Schema.Types.Array,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Order'
     }]
 })

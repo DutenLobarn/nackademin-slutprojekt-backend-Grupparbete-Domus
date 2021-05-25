@@ -11,28 +11,17 @@ const router = express.Router()
 // Bcrypt for password check
 const bcrypt = require('bcryptjs')
 
-
 // Token
 const jwt = require('jsonwebtoken')
 
-// cookies
-const cookieParser = require('cookie-parser')
-app.use(cookieParser())
-
 router.post('/api/auth/', async (req, res) => {
-
 
     //Letar bara upp User via email.
     const user = await User.findOne({
         email: req.body.email
     })
 
-
     if (user) {
-
-        console.log(user)
-        console.log(req.body.password)
-
 
         //Jämför hashade req.password mot det du skriver in i Insomnia. 
         bcrypt.compare(req.body.password, user.password, function (err, result) {
@@ -40,8 +29,11 @@ router.post('/api/auth/', async (req, res) => {
 
             //om resultatet inte är false, signa och skicka token. 
             if (result !== false) {
-                console.log(result)
-                const payload = user.role
+                const payload = {
+                    role: user.role,
+                    email: req.body.email,
+                    _id: user._id
+                }
 
                 const token = jwt.sign(payload, `${process.env.SECRET}`)
                 res.cookie('auth-token', token)
@@ -53,11 +45,7 @@ router.post('/api/auth/', async (req, res) => {
                 res.send('Fel lösen eller email')
             }
         })
-
     }
-
-
 })
-
 
 module.exports = router

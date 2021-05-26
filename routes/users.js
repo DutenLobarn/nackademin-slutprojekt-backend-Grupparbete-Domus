@@ -9,6 +9,10 @@ const bcrypt = require('bcryptjs')
 // En route för att kunna registrera och spara en user till databasen.
 router.post('/api/register', async (req, res) => {
 
+    // Kontrollerar om email finns i databasen redan.
+    const checkMail = await User.findOne({email: req.body.email})
+    if(checkMail) return res.send('Email existerar redan, prova en ny.')
+
     //Hashar lösenordet. 
 
     // Hur långt/svårt den hashade lösenordet ska vara.

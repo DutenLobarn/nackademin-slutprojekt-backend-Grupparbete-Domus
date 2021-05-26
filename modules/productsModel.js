@@ -9,9 +9,7 @@ const productsSchema = mongoose.Schema({
     shortDesc: String,
     longDesc: String,
     imgFile: String
-
 }
-
 )
 
 const Product = mongoose.model('Products', productsSchema)

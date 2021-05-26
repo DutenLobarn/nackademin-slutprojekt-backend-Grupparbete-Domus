@@ -6,10 +6,12 @@ const User = require('../modules/usersModel')
 // Hashing/crypting for password
 const bcrypt = require('bcryptjs')
 
-// A Route to be able to register a user and save it to the database.
+// En route för att kunna registrera och spara en user till databasen.
 router.post('/api/register', async (req, res) => {
 
-    //Hashing for the password 
+    //Hashar lösenordet. 
+
+    // Hur långt/svårt den hashade lösenordet ska vara.
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(req.body.password, salt)
 
@@ -17,7 +19,7 @@ router.post('/api/register', async (req, res) => {
         email: req.body.email,
         password: hashPassword,
         name: req.body.name,
-        // The default value is "customer" and if u want to register an admin u hardcode that into the database for example.
+        // Default värde är "costumer" och vill du registrera en admin måste du hårdkoda det eller uppdater i databasen.
         role: req.body.role,
         adress: {
             street: req.body.adress.street,
